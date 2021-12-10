@@ -42,7 +42,6 @@ module.exports = class TodoDataService {
           TableName,
           Item: newTodoData,
         }
-        // ...
 
        
      // Return the newly created tododata item
@@ -82,9 +81,17 @@ module.exports = class TodoDataService {
           TableName,
           Item: existingTodoData,
         }
-        // ...
+        await dynamoClient.put(params).promise()
+        .then((data) => {
+          console.log(data);
+        })
 
         // Return the newly created tododata item
+        
+        return await dynamoClient.scan({TableName}).promise().then((data) => {
+        console.log(data.Items[0]);
+        return data.Items[0];
+        })
       }
     } catch (error) {
       console.error(error);
@@ -92,21 +99,20 @@ module.exports = class TodoDataService {
     }
   }
 
-  // static async getTodos() {
-  //   try {
-  //     const params = {
-  //       TableName,
-  //       Key: {
-  //         id: "0"
-  //       }
-  //     }
+  static async getTodos() {
+    try {
+      
+      return await dynamoClient.scan({ TableName }).promise().then((data) => {
+        console.log(data.Items[0]); 
+        return data.Items[0];
+        })  
 
-  //     // Check the "tododata" table for the tododata item, and return it
-  //   } catch (error) {
-  //     console.error(error);
-  //     return error;
-  //   }
-  // }
+      // Check the "tododata" table for the tododata item, and return it
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
 
   // static async updateOrder(options) {
   //   try {

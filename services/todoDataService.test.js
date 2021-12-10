@@ -10,7 +10,7 @@ describe("TodoData Service", () => {
     await dynamoClient.delete({ TableName, Key: { id: "0" } }).promise();
   });
 
-  it("adds a todo and returns it with id", async () => {
+  xit("adds a todo and returns it with id", async () => {
     const todoData = {
       name: "Add entry",
       desc: "Personal log",
@@ -23,7 +23,7 @@ describe("TodoData Service", () => {
   });
 
   // remove the 'x' before 'it' to "turn on" the test
-  xit("returns all the todo-data saved", async () => {
+  it("returns all the todo-data saved", async () => {
     const todo1 = {
       name: "Add entry",
       desc: "Personal log",
