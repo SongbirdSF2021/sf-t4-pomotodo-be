@@ -114,29 +114,33 @@ module.exports = class TodoDataService {
     }
   }
 
-  // static async updateOrder(options) {
-  //   try {
-  //     const params = {
-  //       TableName,
-  //       Key: {
-  //         id: "0"
-  //       },
-  //       // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.html
-  //       // UpdateExpression: ...
-  //       // ExpressionAttributeNames: {
-  //       //   ...
-  //       // },
-  //       // ExpressionAttributeValues: {
-  //       //   ...
-  //       // },
-  //     }
+  static async updateOrder(options) {
+    try {
+      const params = {
+        TableName,
+        Key: {
+          id: "0"
+        },
+        // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.html
+        // Setting a name to the current attribute that u want to update. In this case we want to update the 'order'
+        ExpressionAttributeNames: {
+          "#oldOrder": "order"
+        },
+        // Setting an attribute name for the new order value (options.order) with which we want to update the current attribute 'order' 
+        ExpressionAttributeValues: {
+          ":newOrder": options.order
+        },
+        // Update the current attribute with the new attribute value
+        UpdateExpression: "set #oldOrder = :newOrder",
+      }
+      await dynamoClient.update(params).promise()
 
-  //     // Update the tododata item
-  //   } catch (error) {
-  //     console.error(error);
-  //     return error;
-  //   }
-  // }
+      // Update the tododata item
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
 
   // static async updateTodo(id, options) {
   //   try {

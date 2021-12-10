@@ -23,7 +23,7 @@ describe("TodoData Service", () => {
   });
 
   // remove the 'x' before 'it' to "turn on" the test
-  it("returns all the todo-data saved", async () => {
+ xit("returns all the todo-data saved", async () => {
     const todo1 = {
       name: "Add entry",
       desc: "Personal log",
@@ -44,7 +44,7 @@ describe("TodoData Service", () => {
     expect(actual.order.length).toEqual(2);
   });
 
-  xit("updates the todo order", async () => {
+  it("updates the todo order", async () => {
     const todo1 = {
       name: "Add entry",
       desc: "Personal log",
@@ -58,7 +58,7 @@ describe("TodoData Service", () => {
       pomodoroCount: 0,
     };
 
-    const returnedTodo1 = await todoDataService.addTodo(todo1);
+    await todoDataService.addTodo(todo1);
     const returnedTodo2 = await todoDataService.addTodo(todo2);
 
     await todoDataService.updateOrder({
