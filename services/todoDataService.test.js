@@ -44,7 +44,7 @@ describe("TodoData Service", () => {
     expect(actual.order.length).toEqual(2);
   });
 
-  it("updates the todo order", async () => {
+  xit("updates the todo order", async () => {
     const todo1 = {
       name: "Add entry",
       desc: "Personal log",
@@ -89,7 +89,7 @@ describe("TodoData Service", () => {
     expect(actual.todos[actual.order[0]].dateCompleted).toEqual("1622083278575");
   })
 
-  xit('deletes the todo, given id', async () => {
+  it('deletes the todo, given id', async () => {
     const todo1 = {
       name: "Add entry",
       desc: "Personal log",

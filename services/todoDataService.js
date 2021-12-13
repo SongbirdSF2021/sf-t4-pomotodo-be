@@ -142,67 +142,78 @@ module.exports = class TodoDataService {
     }
   }
 
-  // static async updateTodo(id, options) {
-  //   try {
-  //     let params = {
-  //       TableName,
-  //       Key: {
-  //         id: "0"
-  //       }
-  //     }
+  static async updateTodo(id, options) {
+    try {
+      let params = {
+        TableName,
+        Key: {
+          id: "0"
+        },
+      }
+      
+      // Check the "tododata" table for the tododata item, and set it to "existingTodo"
+      
+      let existingTodo = await dynamoClient.get(params).promise()
+        .then((data) => {
+          console.log(data.Item)
+          return data.Item
+        })
 
-  //     // Check the "tododata" table for the tododata item, and set it to "existingTodo"
-  //     // let existingTodo = ...
+      for (let key in options) {
+        existingTodo.todos[id][key] = options[key];
+      }
 
-  //     for (let key in options) {
-  //       existingTodo.todos[id][key] = options[key];
-  //     }
+      console.log(existingTodo.order[0])
 
-  //     params = {
-  //       TableName,
-  //       Item: {
-  //         ...existingTodo
-  //       }
-  //     }
+      params = {
+        TableName,
+        Item: existingTodo
+      }
+     
+    //   // Replace the existing tododata item with the updated one
+    
+   await dynamoClient.put(params).promise()
 
-  //     // Replace the existing tododata item with the updated one
-  //   } catch (error) {
-  //     console.error(error);
-  //     return error;
-  //   }
-  // }
+   } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
 
-  // static async deleteTodo(id) {
-  //   try {
-  //     let params = {
-  //       TableName,
-  //       Key: {
-  //         id: "0"
-  //       }
-  //     }
+  static async deleteTodo(id) {
+    try {
+      let params = {
+        TableName,
+        Key: {
+          id: "0"
+        }
+      }
 
-  //     // Check the "tododata" table for the tododata item, and set it to "existingTodo"
-  //     // let existingTodo = ...
+      // Check the "tododata" table for the tododata item, and set it to "existingTodo"
+      let existingTodo =  await dynamoClient.scan(params).promise().then((data) => {
+        console.log(data.Items[0]); 
+        return data.Items[0];
+      })
 
-  //     existingTodo.order = existingTodo.order.filter((orderId) => {
-  //       return orderId !== id
-  //     });
+      existingTodo.order = existingTodo.order.filter((orderId) => {
+        return orderId !== id
+      });
 
-  //     delete existingTodo.todos[id];
+      delete existingTodo.todos[id];
 
-  //     params = {
-  //       TableName,
-  //       Item: {
-  //         ...existingTodo
-  //       }
-  //     }
-
-  //     // Replace the existing tododata item with the updated one
-  //   } catch (error) {
-  //     console.error(error);
-  //     return error;
-  //   }
-  // }
+      params = {
+        TableName,
+        Item: {
+              ...existingTodo
+      }
+      }
+      await dynamoClient.put(params).promise()
+      // Replace the existing tododata item with the updated one
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
 
   // static async deleteCompletedTodos() {
   //   try {
